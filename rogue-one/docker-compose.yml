@@ -1,0 +1,30 @@
+version: "3"
+services:
+  app:
+    image: node
+    command: bash run.sh
+    volumes:
+      - ./:/app:rw
+      - temp:/tmp:rw
+    working_dir: /app
+    user: node
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+  db:
+    image: mysql
+    environment:
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_RANDOM_ROOT_PASSWORD: "${MYSQL_RANDOM_ROOT_PASSWORD}"
+    volumes:
+      - db:/var/lib/mysql
+volumes:
+  db:
+  temp:
